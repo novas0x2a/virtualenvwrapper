@@ -2,6 +2,21 @@
 Release History
 ===============
 
+1.25
+
+  - Merged in changes to cdsitepackages from William McVey.  It now
+    takes an argument and supports tab-completion for directories
+    within site-packages.
+
+1.24.2
+
+  - Add user provided :ref:`tips-and-tricks` section.
+  - Add link to Rich Leland's screencast to :ref:`references` section.
+
+1.24.1
+
+  - Add license text to the header of the script.
+
 1.24
 
   - Resolve a bug with the preactivate hook not being run properly.
