@@ -7,39 +7,36 @@
 virtualenvwrapper |release|
 ###########################
 
-virtualenvwrapper is a set of extensions to Ian Bicking's `virtualenv
-<http://pypi.python.org/pypi/virtualenv>`_ tool.  The extensions
-include wrappers for creating and deleting virtual environments and
-otherwise managing your development workflow, making it easier to work
-on more than one project at a time without introducing conflicts in
-their dependencies.
+virtualenvwrapper es un conjunto de extensiones de la herramienta de Ian
+Bicking `virtualenv <http://pypi.python.org/pypi/virtualenv>`_. Las extensiones
+incluyen funciones para la creación y eliminación de entornos virtuales y por otro
+lado administración de tu rutina de desarrollo, haciendo fácil trabajar en más
+de un proyecto al mismo tiempo sin introducir conflictos entre sus dependencias.
 
-========
-Features
-========
+===============
+Características
+===============
 
-1. Organizes all of your virtual environments in one place.
-2. Wrappers for managing your virtual environments (create, delete,
-   copy).
-3. Use a single command to switch between environments.
-4. Tab completion for commands that take a virtual environment as
-   argument.
-5. User-configurable hooks for all operations (see :ref:`scripts`).
-6. Plugin system for more creating sharable extensions (see
-   :ref:`plugins`).
+1. Organiza todos tus entornos virtuales en un sólo lugar
+2. Funciones para administrar tus entornor virtuales (crear, eliminar, copiar).
+3. Usa un sólo comando para cambiar entre los entornos.
+4. Completa con tab los comandos que toman un entorno virtual como argumento.
+5. Ganchos configurables para todas las operaciones (ver :ref:`scripts`).
+6. Sistema de plugins para la creación de extensiones compartibles (ver
+:ref:`plugins`).
 
 ============
-Introduction
+Introducción
 ============
 
-The best way to explain the features virtualenvwrapper gives you is to
-show it in use.
+La mejor forma de explicar las características que virtualenvwrapper brinda es
+mostrar éste en uso.
 
-First, some initialization steps.  Most of this only needs to be done
-one time.  You will want to add the command to ``source
-/usr/local/bin/virtualenvwrapper.sh`` to your shell startup file,
-changing the path to virtualenvwrapper.sh depending on where it was
-installed by pip.
+Primero, algunos pasos de inicialización. La mayoría de esto sólo necesita ser
+hecho una sóla vez. Vas a querer agregar el comando ``source
+/usr/local/bin/virtualenvwrapper.sh`` al archivo de inicio de shell, cambiando
+el path hacia virtualenvwrapper.sh dependiendo en dónde haya sido instalado por
+pip.
 
 ::
 
@@ -61,7 +58,7 @@ installed by pip.
   (env1)$ ls $WORKON_HOME
   env1 hook.log
 
-Now we can install some software into the environment.
+Ahora podemos instalar algún software dentro del entorno.
 
 ::
 
@@ -75,14 +72,14 @@ Now we can install some software into the environment.
       changing mode of /Users/dhellmann/Envs/env1/bin/django-admin.py to 755
   Successfully installed django
 
-We can see the new package with ``lssitepackages``::
+Podemos ver el nuevo paquete instalado con ``lssitepackages``::
 
   (env1)$ lssitepackages
   Django-1.1.1-py2.6.egg-info     easy-install.pth
   distribute-0.6.10-py2.6.egg     pip-0.6.3-py2.6.egg
   django                          setuptools.pth
 
-Of course we are not limited to a single virtualenv::
+Por supuesto que no estamos limitados a un sólo virtualenv::
 
   (env1)$ ls $WORKON_HOME
   env1            hook.log
@@ -98,16 +95,16 @@ Of course we are not limited to a single virtualenv::
   (env2)$ ls $WORKON_HOME
   env1            env2            hook.log
 
-Switch between environments with ``workon``::
+Cambiar entre entornos con ``workon``::
 
   (env2)$ workon env1
   (env1)$ echo $VIRTUAL_ENV
   /Users/dhellmann/Envs/env1
   (env1)$ 
 
-The ``workon`` command also includes tab completion for the
-environment names, and invokes customization scripts as an environment
-is activated or deactivated (see :ref:`scripts`).
+El comando ``workon`` también incluye la completación con tab para los nombres
+de los entornos, e invoca a los scripts customizados cuando un entorno es
+activado o desactivado (ver :ref:`scripts`).
 
 ::
 
@@ -116,8 +113,8 @@ is activated or deactivated (see :ref:`scripts`).
   (env2)$ pwd
   /Users/dhellmann/Envs/env2
 
-:ref:`scripts-postmkvirtualenv` is run when a new environment is
-created, letting you automatically install commonly-used tools.
+:ref:`scripts-postmkvirtualenv` es ejecutado cuando un nuevo entorno es creado,
+dejándote instalar automáticamente herramientas comunmente utilizadas.
 
 ::
 
@@ -159,15 +156,15 @@ created, letting you automatically install commonly-used tools.
   (venv3)$ which sphinx-build
   /Users/dhellmann/Envs/env3/bin/sphinx-build
 
-Through a combination of the existing functions defined by the core
-package (see :ref:`command`), third-party plugins (see
-:ref:`plugins`), and user-defined scripts (see :ref:`scripts`)
-virtualenvwrapper gives you a wide variety of opportunities to
-automate repetitive operations.
+A través de una combinación de funciones existentes definidas por el "core"
+package (see :ref:`command`), plugins de terceros (see
+:ref:`plugins`), y scripts definidos por el usuario (see :ref:`scripts`)
+virtualenvwrapper brinda una amplia variedad de oportunidades para automatizar
+tareas repetitivas.
 
-=======
-Details
-=======
+========
+Detalles
+========
 
 .. toctree::
    :maxdepth: 2
@@ -179,29 +176,28 @@ Details
    developers
    extensions
    history
-   translations
 
 .. _references:
 
-==========
-References
-==========
+===========
+Referencias
+===========
 
-`virtualenv <http://pypi.python.org/pypi/virtualenv>`_, from Ian
-Bicking, is a pre-requisite to using these extensions.
+`virtualenv <http://pypi.python.org/pypi/virtualenv>`_, de Ian
+Bicking, es un pre-requisito para usar estas extensiones.
 
-For more details, refer to the column I wrote for the May 2008 issue
-of Python Magazine: `virtualenvwrapper | And Now For Something
+Para más detalles, referirse a la columna que escribí para la revista de
+python (Python Magazine) en Mayo de 2008: `virtualenvwrapper | And Now For Something
 Completely Different
 <http://www.doughellmann.com/articles/CompletelyDifferent-2008-05-virtualenvwrapper/index.html>`_.
 
-Rich Leland has created a short `screencast
+Rich Leland ha grabado un pequeño `screencast
 <http://mathematism.com/2009/jul/30/presentation-pip-and-virtualenv/>`__
-showing off the features of virtualenvwrapper.
+mostrando las características de virtualenvwrapper.
 
-=======
-License
-=======
+========
+Licencia
+========
 
 Copyright Doug Hellmann, All Rights Reserved
 

@@ -33,6 +33,7 @@ sdist: html
 .PHONY: html
 html:
 	(cd docs && $(MAKE) html SPHINXOPTS="-c sphinx/pkg")
+	(cd docs && $(MAKE) html SPHINXOPTS="-c sphinx/pkg" LANGUAGE="es")
 
 # Website copy of documentation
 .PHONY: website
@@ -40,6 +41,7 @@ website:
 	[ ~/Devel/doughellmann/doughellmann/templates/base.html -nt docs/sphinx/web/templates/base.html ] && (echo "Updating base.html" ; cp ~/Devel/doughellmann/doughellmann/templates/base.html docs/sphinx/web/templates/base.html) || exit 0
 	rm -rf docs/website
 	(cd docs && $(MAKE) html SPHINXOPTS="-c sphinx/web" BUILDDIR="website")
+	(cd docs && $(MAKE) html SPHINXOPTS="-c sphinx/web" BUILDDIR="website" LANGUAGE="es")
 
 installwebsite: website
 	(cd docs/website/html && rsync --rsh=ssh --archive --delete --verbose . www.doughellmann.com:/var/www/doughellmann/DocumentRoot/docs/virtualenvwrapper/)
