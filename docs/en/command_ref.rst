@@ -365,11 +365,13 @@ for the environment.
 
 *Based on a contribution from James Bennett and Jannis Leidel.*
 
+.. _command-toggleglobalsitepackages:
+
 toggleglobalsitepackages
 ------------------------
 
-Toggles the state of the currently active virtualenv's access to the packages
-in the global python ``site-packages`` directory.
+Controls whether the active virtualenv will access the packages in the
+global Python ``site-packages`` directory.
 
 Syntax::
 

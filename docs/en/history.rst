@@ -8,6 +8,16 @@ dev
   - Fix problem with argument processing in lsvirtualenv under zsh
     (:bbissue:`86`). Thanks to Nat Williams (:bbuser:`natw`) for the
     bug report and patch.
+  - If WORKON_HOME does not exist, create it. Patch from Carl Karsten
+    (:bbuser:`CarlFK`). Test updates based on patches from Matt Austin
+    (:bbuser:`maafy6`) and Hugo Lopes Tavares (:bbuser:`hltbra`).
+  - Merge in contributions from Paul McLanahan (:bbuser:`pmclanahan`)
+    to fix the test harness to ensure that the test scripts are
+    actually running under the expected shell.
+  - Merge in new shell command :ref:`command-toggleglobalsitepackages`
+    from Paul McLanahan (:bbuser:`pmclanahan`). The new command
+    changes the configuration of the active virtualenv to enable or
+    disable the global ``site-packages`` directory.
 
 2.6.3
 
