@@ -47,7 +47,7 @@
 # Locate the global Python where virtualenvwrapper is installed.
 if [ "$VIRTUALENVWRAPPER_PYTHON" = "" ]
 then
-    VIRTUALENVWRAPPER_PYTHON="$(\which python)"
+    VIRTUALENVWRAPPER_PYTHON="$(builtin \which python)"
 fi
 
 # Set the name of the virtualenv app to use.
@@ -84,7 +84,7 @@ function virtualenvwrapper_derive_workon_home {
 
     # If the path is relative, prefix it with $HOME
     # (note: for compatibility)
-    if echo "$workon_home_dir" | (unset GREP_OPTIONS; \grep '^[^/~]' > /dev/null)
+    if echo "$workon_home_dir" | (unset GREP_OPTIONS; command \grep '^[^/~]' > /dev/null)
     then
         workon_home_dir="$HOME/$WORKON_HOME"
     fi
@@ -93,7 +93,7 @@ function virtualenvwrapper_derive_workon_home {
     # path might contain stuff to expand.
     # (it might be possible to do this in shell, but I don't know a
     # cross-shell-safe way of doing it -wolever)
-    if echo "$workon_home_dir" | (unset GREP_OPTIONS; \egrep '([\$~]|//)' >/dev/null)
+    if echo "$workon_home_dir" | (unset GREP_OPTIONS; command \egrep '([\$~]|//)' >/dev/null)
     then
         # This will normalize the path by:
         # - Removing extra slashes (e.g., when TMPDIR ends in a slash)
@@ -130,7 +130,7 @@ function virtualenvwrapper_verify_workon_home {
 function virtualenvwrapper_tempfile {
     # Note: the 'X's must come last
     typeset suffix=${1:-hook}
-    typeset file="`\mktemp -t virtualenvwrapper-$suffix-XXXXXXXXXX`"
+    typeset file="`command \mktemp -t virtualenvwrapper-$suffix-XXXXXXXXXX`"
     if [ $? -ne 0 ]
     then
         echo "ERROR: virtualenvwrapper could not create a temporary file name." 1>&2
@@ -242,7 +242,7 @@ function virtualenvwrapper_initialize {
 
 # Verify that virtualenv is installed and visible
 function virtualenvwrapper_verify_virtualenv {
-    typeset venv=$(\which "$VIRTUALENVWRAPPER_VIRTUALENV" | (unset GREP_OPTIONS; \grep -v "not found"))
+    typeset venv=$(builtin \which "$VIRTUALENVWRAPPER_VIRTUALENV" | (unset GREP_OPTIONS; command \grep -v "not found"))
     if [ "$venv" = "" ]
     then
         echo "ERROR: virtualenvwrapper could not find $VIRTUALENVWRAPPER_VIRTUALENV in your path" >&2
@@ -361,7 +361,7 @@ function mkvirtualenv {
     virtualenvwrapper_verify_virtualenv || return 1
     (
         [ -n "$ZSH_VERSION" ] && setopt SH_WORD_SPLIT
-        \cd "$WORKON_HOME" &&
+        builtin \cd "$WORKON_HOME" &&
         "$VIRTUALENVWRAPPER_VIRTUALENV" $VIRTUALENVWRAPPER_VIRTUALENV_ARGS "$@" &&
         [ -d "$WORKON_HOME/$envname" ] && \
             virtualenvwrapper_run_hook "pre_mkvirtualenv" "$envname"
@@ -422,7 +422,7 @@ function rmvirtualenv {
         # Move out of the current directory to one known to be
         # safe, in case we are inside the environment somewhere.
         typeset prior_dir="$(pwd)"
-        \cd "$WORKON_HOME"
+        builtin \cd "$WORKON_HOME"
 
         virtualenvwrapper_run_hook "pre_rmvirtualenv" "$env_name"
         \rm -rf "$env_dir"
@@ -431,7 +431,7 @@ function rmvirtualenv {
         # If the directory we used to be in still exists, move back to it.
         if [ -d "$prior_dir" ]
         then
-            \cd "$prior_dir"
+            builtin \cd "$prior_dir"
         fi
     done
 }
@@ -442,9 +442,9 @@ function virtualenvwrapper_show_workon_options {
     # NOTE: DO NOT use ls here because colorized versions spew control characters
     #       into the output list.
     # echo seems a little faster than find, even with -depth 3.
-    (\cd "$WORKON_HOME"; for f in */$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate; do echo $f; done) 2>/dev/null | \sed 's|^\./||' | \sed "s|/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate||" | \sort | (unset GREP_OPTIONS; \egrep -v '^\*$')
+    (builtin \cd "$WORKON_HOME"; for f in */$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate; do echo $f; done) 2>/dev/null | command \sed 's|^\./||' | command \sed "s|/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate||" | \sort | (unset GREP_OPTIONS; command \egrep -v '^\*$')
 
-#    (\cd "$WORKON_HOME"; find -L . -depth 3 -path '*/bin/activate') | sed 's|^\./||' | sed 's|/bin/activate||' | sort
+#    (builtin \cd "$WORKON_HOME"; find -L . -depth 3 -path '*/bin/activate') | sed 's|^\./||' | sed 's|/bin/activate||' | sort
 }
 
 function _lsvirtualenv_usage {
@@ -691,14 +691,14 @@ function cdsitepackages {
     virtualenvwrapper_verify_workon_home || return 1
     virtualenvwrapper_verify_active_environment || return 1
     typeset site_packages="`virtualenvwrapper_get_site_packages_dir`"
-    \cd "$site_packages"/$1
+    builtin \cd "$site_packages"/$1
 }
 
 # Does a ``cd`` to the root of the currently-active virtualenv.
 function cdvirtualenv {
     virtualenvwrapper_verify_workon_home || return 1
     virtualenvwrapper_verify_active_environment || return 1
-    \cd $VIRTUAL_ENV/$1
+    builtin \cd $VIRTUAL_ENV/$1
 }
 
 # Shows the content of the site-packages directory of the currently-active
@@ -747,7 +747,7 @@ function cpvirtualenv {
         echo "Please specify target virtualenv"
         return 1
     fi
-    if echo "$WORKON_HOME" | (unset GREP_OPTIONS; \grep "/$" > /dev/null)
+    if echo "$WORKON_HOME" | (unset GREP_OPTIONS; command \grep "/$" > /dev/null)
     then
         typeset env_home="$WORKON_HOME"
     else
@@ -762,19 +762,19 @@ function cpvirtualenv {
         return 1
     fi
 
-    \cp -r "$source_env" "$target_env"
-    for script in $( \ls $target_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/* )
+    command \cp -r "$source_env" "$target_env"
+    for script in $( command \ls $target_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/* )
     do
         newscript="$script-new"
-        \sed "s|$source_env|$target_env|g" < "$script" > "$newscript"
-        \mv "$newscript" "$script"
-        \chmod a+x "$script"
+        command \sed "s|$source_env|$target_env|g" < "$script" > "$newscript"
+        command \mv "$newscript" "$script"
+        command \chmod a+x "$script"
     done
 
     "$VIRTUALENVWRAPPER_VIRTUALENV" "$target_env" --relocatable
-    \sed "s/VIRTUAL_ENV\(.*\)$env_name/VIRTUAL_ENV\1$new_env/g" < "$source_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate" > "$target_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate"
+    command \sed "s/VIRTUAL_ENV\(.*\)$env_name/VIRTUAL_ENV\1$new_env/g" < "$source_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate" > "$target_env/$VIRTUALENVWRAPPER_ENV_BIN_DIR/activate"
 
-    (\cd "$WORKON_HOME" && (
+    (builtin \cd "$WORKON_HOME" && (
         virtualenvwrapper_run_hook "pre_cpvirtualenv" "$env_name" "$new_env";
         virtualenvwrapper_run_hook "pre_mkvirtualenv" "$new_env"
         ))
